@@ -168,7 +168,7 @@ All statistical analyses use `StatisticalConfig` + `run_comprehensive_statistica
 ```python
 config = ptk.StatisticalConfig()
 config.analysis_type = 'unpaired'
-# Options: 'welch_t', 'mann_whitney', 'limma_like', 'deqms_like'
+# Options: 'welch_t', 'mann_whitney', 'moderated_linear_model'
 config.statistical_test_method = 'welch_t'
 config.group_column = 'Group'
 config.group_labels = ['Control', 'Treatment']
@@ -181,10 +181,13 @@ results = ptk.run_comprehensive_statistical_analysis(
 ```
 
 For small sample sizes, prefer empirical Bayes variance shrinkage: set
-`config.statistical_test_method = 'limma_like'` (works on proteins or
-peptides), or `'deqms_like'` (protein-level only; uses the `n_peptides`
-column from PRISM output to build a peptide-count-conditioned variance
-prior). See [docs/06-statistical-analysis.md](docs/06-statistical-analysis.md#limma_like-and-deqms_like-empirical-bayes-variance-shrinkage) for details.
+`config.statistical_test_method = 'moderated_linear_model'` and choose a
+`config.moderation` prior — `'intensity_trend'` (default; works on proteins
+or peptides), `'limma'` (global prior), or `'deqms'` (protein-level only;
+uses the `n_peptides` column from PRISM output to build a
+peptide-count-conditioned variance prior). See
+[docs/06-statistical-analysis.md](docs/06-statistical-analysis.md#moderated-linear-model--limma-deqms-or-intensity_trend)
+for details.
 
 ### Paired comparison (before/after per subject)
 ```python
